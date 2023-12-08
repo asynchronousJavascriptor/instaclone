@@ -1,0 +1,23 @@
+<% include ./partials/header.ejs %>
+  <div class="w-full min-h-screen bg-zinc-900 text-white py-5">
+    <div class="flex justify-between items-center px-4">
+      <a class="text-sm text-blue-500" href="/profile"><i class="ri-arrow-left-s-line"></i> profile</a>
+      <h2 class="leading-none text-sm">Edit Profile</h2>
+      <a class="text-sm" href="/feed"><i class="ri-home-line"></i> home</a>
+    </div>
+    <div class="flex flex-col items-center gap-2 mt-20">
+      <div class="image w-20 h-20 bg-sky-100 rounded-full"></div>
+      <button class="text-blue-500 capitalize">edit picture</button>
+    </div>
+    <div class="gap-5 px-4 mt-10">
+      <h3 class="text-lg leading-none">Edit Account Details</h3>
+      <hr class="opacity-30 my-3">
+      <form class="w-full" action="">
+        <input class="px-3 mt-2 py-2 border-2 border-zinc-800 rounded-md block w-full bg-zinc-900" type="text" placeholder="username" name="password">
+        <input class="px-3 mt-2 py-2 border-2 border-zinc-800 rounded-md block w-full bg-zinc-900" type="text" placeholder="name" name="name">
+        <textarea class="px-3 mt-2 py-2 border-2 border-zinc-800 rounded-md block w-full bg-zinc-900 resize-none" placeholder="Bio"></textarea>
+        <input class="w-full bg-blue-500 px-3 py-3 rounded-md mt-2" type="submit" value="Update Details">
+      </form>
+    </div>
+  </div>
+<% include ./partials/footer.ejs %>

@@ -1,0 +1,27 @@
+<% include ./partials/header.ejs %>
+  <div class="w-full min-h-screen bg-zinc-900 text-white py-5">
+    <div class="flex justify-between items-center px-4">
+      <a class="text-sm text-blue-500" href="/profile"><i class="ri-arrow-left-s-line"></i> profile</a>
+      <h2 class="leading-none text-sm">Upload Post</h2>
+      <a class="text-sm" href="/feed"><i class="ri-home-line"></i> home</a>
+    </div>
+    <div class="flex flex-col items-center gap-2 mt-20">
+      <div class="image w-[25vw] h-[25vw] rounded-full border-2 border-zinc-800 flex items-center justify-center">
+        <i class="text-5xl font-light ri-image-line"></i>
+      </div>
+      <button id="selectpic" class="text-blue-500 capitalize">select picture</button>
+    </div>
+    <form id="uploadform" action="/upload" class="w-full px-6 py-3 mt-10" enctype="multipart/form-data" method="post">
+        <input hidden type="file" name="image">
+        <textarea class="px-2 py-1 w-full bg-zinc-900 border-2 h-20 border-zinc-800 resize-none rounded-md outline-none" placeholder="Write a caption..."></textarea>
+        <input class="w-full px-2 py-2 bg-blue-500 rounded-md" type="submit" value="Post">
+    </form>
+  </div>
+
+  <script>
+    document.querySelector("#selectpic")
+    .addEventListener("click", function(){
+        document.querySelector("#uploadform input").click();
+    });
+  </script>
+<% include ./partials/footer.ejs %>
