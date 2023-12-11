@@ -1,3 +1,4 @@
+Steps to be completed in the Backend:
 login & register page
 feed page
 profile page
