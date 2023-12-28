@@ -7,17 +7,25 @@
     </div>
     <div class="flex flex-col items-center gap-2 mt-20">
       <div class="image w-20 h-20 bg-sky-100 rounded-full"></div>
-      <button class="text-blue-500 capitalize">edit picture</button>
+      <button id="editbtn" class="text-blue-500 capitalize">edit picture</button>
     </div>
     <div class="gap-5 px-4 mt-10">
       <h3 class="text-lg leading-none">Edit Account Details</h3>
       <hr class="opacity-30 my-3">
-      <form class="w-full" action="">
-        <input class="px-3 mt-2 py-2 border-2 border-zinc-800 rounded-md block w-full bg-zinc-900" type="text" placeholder="username" name="password">
-        <input class="px-3 mt-2 py-2 border-2 border-zinc-800 rounded-md block w-full bg-zinc-900" type="text" placeholder="name" name="name">
-        <textarea class="px-3 mt-2 py-2 border-2 border-zinc-800 rounded-md block w-full bg-zinc-900 resize-none" placeholder="Bio"></textarea>
+      <form class="w-full" action="/update" method="post" enctype="multipart/form-data">
+        <input id="imageinput" hidden type="file" name="image">
+        <input class="px-3 mt-2 py-2 border-2 border-zinc-800 rounded-md block w-full bg-zinc-900" type="text" placeholder="username" name="username" value="<%= user.username%>">
+        <input class="px-3 mt-2 py-2 border-2 border-zinc-800 rounded-md block w-full bg-zinc-900" type="text" placeholder="name" name="name" value="<%= user.name%>">
+        <textarea class="px-3 mt-2 py-2 border-2 border-zinc-800 rounded-md block w-full bg-zinc-900 resize-none" placeholder="Bio" name="bio"><%= user.bio%></textarea>
         <input class="w-full bg-blue-500 px-3 py-3 rounded-md mt-2" type="submit" value="Update Details">
       </form>
     </div>
   </div>
+
+  <script>
+    document.querySelector('#editbtn').addEventListener('click', function(){
+      document.querySelector('#imageinput').click();
+    })
+  </script>
+
 <% include ./partials/footer.ejs %>
