@@ -2,26 +2,43 @@
   <div class="w-full min-h-screen bg-zinc-900 px-4 py-5">
     <div class="border-2 border-zinc-800 flex items-center justify-between px-2 py-1 rounded-md">
         <i class="text-white ri-search-line"></i>
-        <input class="ml-1 w-full bg-zinc-900 outline-none text-zinc-400" type="text" placeholder="search username">
+        <input id="inputusername" class="ml-1 w-full bg-zinc-900 outline-none text-zinc-400" type="text" placeholder="search username">
     </div>
     <div class="users">
-        <a href="/profile" class="outline-none">
+       
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.4/axios.min.js" integrity="sha512-ANd7ZJmixP2T0hxOP4bS6hkci01fxyrQSyRdaY7IsWq1WlKsD0WwWBDVDZbnMR7CJZVKCTkDx/q5D5n2C2C+vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+   
+
+    const inp = document.querySelector("#inputusername");
+    let clutter = "" // Use # for ID selector;
+inp.addEventListener("input", function () {
+    axios.get(`/username/${inp.value}`)
+        .then(function (data) {
+            data.data.forEach(function(elem){
+                clutter += `
+                
+            });
+            <a href="/profile" class="outline-none">
             <div class="text-white flex items-center gap-2 mt-5">
-                <div class="image w-[11vw] h-[11vw] rounded-full bg-sky-100"></div>
+                <div class="image w-[11vw] h-[11vw] rounded-full bg-sky-100">
+                    <img src="/images/upload/${elem.profileImage}" alt="">
+                </div>
                 <div class="text">
-                    <h3>iamharshvandanasharma</h3>
-                    <h4 class="text-xs opacity-30 leading-none">Harsh Vandana Sharma</h4>
+                    <h3>${elem.username}</h3>
+                    <h4 class="text-xs opacity-30 leading-none">${elem.name}</h4>
                 </div>
             </div>            
         </a>
+            `
+        })
+    document.querySelector(".users").innerHTML = clutter
+});
+});
 
-        <div class="text-white flex items-center gap-2 mt-5">
-            <div class="image w-[11vw] h-[11vw] rounded-full bg-sky-100"></div>
-            <div class="text">
-                <h3>iamharshvandanasharma</h3>
-                <h4 class="text-xs opacity-30 leading-none">Harsh Vandana Sharma</h4>
-            </div>
-        </div>
-    </div>
-  </div>
+  </script>
 <% include ./partials/footer.ejs %>
