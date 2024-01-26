@@ -4,7 +4,9 @@
         <a href="/search"><i class="text-[1.4rem] ri-search-line"></i></a>
         <a href="/upload"><i class="text-[1.4rem] ri-add-box-line"></i></a>
         <a href="/profile">
-          <div class="w-6 h-6 bg-zinc-300 rounded-full"></div>
+          <div class="w-8 h-8 bg-zinc-300 rounded-full overflow-hidden">
+            <img src="/images/uploads/<%= user.picture %>" alt="">
+          </div>
         </a>
       </div>
 <% } %>

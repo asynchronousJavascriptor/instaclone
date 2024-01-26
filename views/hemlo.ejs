@@ -1,0 +1,14 @@
+<% include ./partials/header.ejs %>
+    <div class="w-full h-screen bg-zinc-900">
+        <button class="px-10 py-3 bg-green-500 text-sm font-semibold text-white rounded-md">click and send request</button>
+    </div>
+
+    <script>
+        document.querySelector("button")
+        .addEventListener("click", function(){
+            fetch("/check")
+            .then(raw => raw.json())
+            .then(response => console.log(response));
+        })
+    </script>
+<% include ./partials/footer.ejs %>
