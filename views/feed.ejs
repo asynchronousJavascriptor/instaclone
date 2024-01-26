@@ -69,7 +69,7 @@
         </div>
       </div>
     </div>
-    <div class="posts mb-20">
+    <div class="posts parent mb-20">
       <% posts.reverse().forEach(function(post){ %>
         <div class="post mt-10 w-full min-h-[50vh]">
           <div class="title px-4 flex items-center gap-2">
@@ -82,11 +82,11 @@
             <h6 class="text-xs opacity-30"><%= dater(new Date(post.date)) %></h6>
           </div>
           <div class="w-full h-96 mt-4 bg-sky-100 overflow-hidden">
-            <img class="w-full h-full object-cover" src="/images/uploads/<%= post.picture %>" alt="">
+            <img data-postid="<%= post.id %>" class="postimg w-full h-full object-cover" src="/images/uploads/<%= post.picture %>" alt="">
           </div>
           <div class="options w-full px-4 flex justify-between items-center text-[1.4rem]">
             <div class="flex gap-3 mt-2">
-              <i class="ri-heart-3-line"></i>
+              <i class="heart ri-heart-3-line"></i>
               <i class="ri-chat-3-line"></i>
               <i class="ri-share-circle-line"></i>
             </div>
@@ -95,7 +95,8 @@
           <h3 class="px-4 mt-2 text-sm leading-none tracking-tight">
             <%= post.like.length %> likes
           </h3>
-          <h2 class="text-white font-light text-sm mt-2"><span class="font-semibold pl-4 pr-2">
+          <h2 class="text-white font-light text-sm mt-2">
+            <span class="font-semibold pl-4 pr-2">
               <%= post.user.username %>
             </span>
             <%= post.caption %>
@@ -139,5 +140,27 @@
 
       return `${weeks}w`;
     }
+  
+    document.querySelector(".parent")
+    .addEventListener("click", function(dets){
+      if(dets.target.classList.contains("postimg")){
+        var heartwithborder = dets.target.parentNode.parentNode.querySelector(".heart");
+        if(heartwithborder.classList.contains("ri-heart-3-line")){
+          heartwithborder.classList.remove("ri-heart-3-line")
+          heartwithborder.classList.add("ri-heart-3-fill")
+          heartwithborder.style.color = "red";
+        }
+        else{
+          heartwithborder.classList.remove("ri-heart-3-fill")
+          heartwithborder.classList.add("ri-heart-3-line")
+          heartwithborder.style.color = "white";
+        }
+        // fetch(`/like/${dets.target.dataset.postid}`)
+        // .then(raw => raw.json())
+        // .then(response => {
+        //   console.log(response);
+        // })
+      }
+    })
   </script>
   <% include ./partials/footer.ejs %>

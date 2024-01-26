@@ -13,16 +13,16 @@ router.get('/', function(req, res) {
   res.render('index', {footer: false});
 });
 
-router.get('/test', function(req, res) {
-  res.render('hemlo', {footer: false});
-});
-
-router.get('/check', function(req, res) {
-  res.json({name: "harsh", age: 25, shaadiShuda: false})
-});
-
 router.get('/login', function(req, res) {
   res.render('login', {footer: false});
+});
+
+router.get('/like/:postid', async function(req, res) {
+  const post = await postModel.findOne({_id: req.params.postid});
+  const user = await userModel.findOne({username: req.session.passport.user});
+  post.like.push(user._id);
+  await post.save();
+  res.json(post);
 });
 
 router.get('/feed', isLoggedIn, async function(req, res) {
@@ -106,7 +106,7 @@ router.post('/register', function(req, res) {
 });
 
 router.post("/login", passport.authenticate("local", {
-  successRedirect: "/profile",
+  successRedirect: "/feed",
   failureRedirect: "/login"
 }), function(req, res){});
 
