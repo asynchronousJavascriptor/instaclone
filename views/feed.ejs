@@ -79,20 +79,27 @@
             <h4 class="text-sm">
               <%= post.user.username %>
             </h4>
-            <h6 class="text-xs opacity-30"><%= dater(new Date(post.date)) %></h6>
+            <h6 class="text-xs opacity-30">
+              <%= dater(new Date(post.date)) %>
+            </h6>
           </div>
-          <div class="w-full h-96 mt-4 bg-sky-100 overflow-hidden">
-            <img data-postid="<%= post.id %>" class="postimg w-full h-full object-cover" src="/images/uploads/<%= post.picture %>" alt="">
+          <div class="relative w-full h-96 mt-4 bg-sky-100 overflow-hidden">
+            <img data-postid="<%= post.id %>" class="postimg w-full h-full object-cover"
+              src="/images/uploads/<%= post.picture %>" alt="">
           </div>
           <div class="options w-full px-4 flex justify-between items-center text-[1.4rem]">
             <div class="flex gap-3 mt-2">
-              <i class="heart ri-heart-3-line"></i>
-              <i class="ri-chat-3-line"></i>
-              <i class="ri-share-circle-line"></i>
+              <% if(post.like.indexOf(user._id)===-1){ %>
+                <i class="heart ri-heart-3-line"></i>
+                <% } else { %>
+                  <i class="heart ri-heart-3-fill text-red-500"></i>
+                  <% } %>
+                    <i class="ri-chat-3-line"></i>
+                    <i class="ri-share-circle-line"></i>
             </div>
             <i class="ri-bookmark-line"></i>
           </div>
-          <h3 class="px-4 mt-2 text-sm leading-none tracking-tight">
+          <h3 class="likeval px-4 mt-2 text-sm leading-none tracking-tight">
             <%= post.like.length %> likes
           </h3>
           <h2 class="text-white font-light text-sm mt-2">
@@ -106,6 +113,7 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     function formatRelativeTime(date) {
       const now = new Date();
@@ -140,27 +148,57 @@
 
       return `${weeks}w`;
     }
-  
+
     document.querySelector(".parent")
-    .addEventListener("click", function(dets){
-      if(dets.target.classList.contains("postimg")){
-        var heartwithborder = dets.target.parentNode.parentNode.querySelector(".heart");
-        if(heartwithborder.classList.contains("ri-heart-3-line")){
-          heartwithborder.classList.remove("ri-heart-3-line")
-          heartwithborder.classList.add("ri-heart-3-fill")
-          heartwithborder.style.color = "red";
-        }
-        else{
-          heartwithborder.classList.remove("ri-heart-3-fill")
-          heartwithborder.classList.add("ri-heart-3-line")
-          heartwithborder.style.color = "white";
-        }
-        // fetch(`/like/${dets.target.dataset.postid}`)
-        // .then(raw => raw.json())
-        // .then(response => {
-        //   console.log(response);
-        // })
-      }
-    })
+      .addEventListener("click", function (dets) {
+        if (dets.target.classList.contains("postimg")) {
+          var post = dets.target.parentNode.parentNode;
+          var heartwithborder = post.querySelector(".heart");
+          if (heartwithborder.classList.contains("ri-heart-3-line")) {
+            heartwithborder.classList.remove("ri-heart-3-line")
+            heartwithborder.classList.add("ri-heart-3-fill")
+            heartwithborder.classList.add("text-red-500")
+            // heartwithborder.style.color = "red";
+          }
+          else {
+            heartwithborder.classList.remove("ri-heart-3-fill")
+            heartwithborder.classList.remove("text-red-500")
+            heartwithborder.classList.add("ri-heart-3-line")
+          }
+          fetch(`/like/${dets.target.dataset.postid}`)
+            .then(raw => raw.json())
+            .then(response => {
+              console.log(response.like.length);
+              post.querySelector(".likeval").textContent = response.like.length + " likes"
+            })
+        
+            var icon = document.createElement("i");
+            icon.classList.add("ri-heart-3-fill");
+            icon.classList.add("text-red-700", "text-6xl", 'absolute', 'top-1/2', 'left-1/2', '-translate-x-[50%]', '-translate-y-[50%]', 'z-[9]');
+            dets.target.parentNode.appendChild(icon);
+            
+            gsap.from(icon, {
+              scale: .5,
+              y: 30,
+              opacity: 0,
+              ease: Expo,
+              duration: .3
+            })
+
+            gsap.to(icon, {
+              scale: 0,
+              y: -30,
+              opacity: 0,
+              duration: .3,
+              ease: Expo,
+              delay: .3,
+              onComplete: ()=>{
+                dets.target.parentNode.removeChild(icon);
+              }
+            })
+          }
+      })
   </script>
+
+
   <% include ./partials/footer.ejs %>

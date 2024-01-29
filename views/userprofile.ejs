@@ -1,0 +1,56 @@
+<% include ./partials/header.ejs %>
+  <div class="w-full min-h-screen bg-zinc-900 text-white py-5">
+      <div class="nav flex justify-between items-center px-4">
+        <h3 class="text-lg"><%= userprofile.username %></h3>
+        <div class="icons flex gap-5">
+          <a href="/upload"><i class="text-[1.4rem] ri-add-box-line"></i></a>
+          <i class="text-[1.4rem] ri-menu-line"></i>
+        </div>
+      </div>
+      <div class="flex justify-between items-center pl-6 pr-[12vw] mt-8">
+        <div class="w-[19vw] h-[19vw] bg-sky-100 rounded-full overflow-hidden">
+          <img class="w-full h-full object-cover" src="/images/uploads/<%= userprofile.picture %>" alt="">
+        </div>
+        <div class="stats flex gap-5 items-center justify-between">
+          <div class="flex flex-col items-center justify-center">
+            <h3 class="text-lg"><%= userprofile.posts.length %></h3>
+            <h4>Posts</h4>
+          </div>
+          <div class="flex flex-col items-center justify-center">
+            <h3 class="text-lg"><%= userprofile.followers.length %></h3>
+            <h4>Followers</h4>
+          </div>
+          <div class="flex flex-col items-center justify-center">
+            <h3 class="text-lg"><%= userprofile.following.length %></h3>
+            <h4>Following</h4>
+          </div>
+        </div>
+      </div>
+      <div class="dets px-6 mt-5">
+        <h3 class="text-lg mb-1"><%= userprofile.name %></h3>
+        <p class="text-xs tracking-tight opacity-50"><%= userprofile.bio ?? "You have not set anything yet, (click edit profile to set)" %></p>
+      </div>
+      <div class="px-6 mt-5 flex gap-1">
+        <% if(user.following.indexOf(userprofile._id) === -1){ %>
+            <a class="px-6 py-2 bg-blue-500 text-xs rounded-md" href="/follow/<%= userprofile._id %>">Follow</a>
+        <% } else { %>
+            <a class="px-6 py-2 bg-zinc-800 text-xs rounded-md" href="/follow/<%= userprofile._id %>">Following</a>
+        <% } %>
+        <a class="px-6 py-2 bg-zinc-800 text-xs rounded-md" href="/edit">Message</a>
+        <a class="px-6 py-2 bg-zinc-800 text-xs rounded-md" href="/edit">Contact</a>
+      </div>
+      <div class="posts w-full flex gap-1 py-2 mt-5 flex-wrap">
+        <% if(userprofile.posts.length>0){ %>
+          <% userprofile.posts.reverse().forEach(function(post){ %>
+            <div class="post w-[32.5%] h-32 bg-sky-100">
+              <img class="w-full h-full object-cover" src="/images/uploads/<%= post.picture %>" alt="">
+            </div>
+          <% }) %>
+        <% } else { %>
+          <div class="w-full flex justify-center items-center min-h-[20vh]">
+            <small class="opacity-50">no posts yet.</small>
+          </div>
+        <% } %>
+      </div>
+  </div>
+<% include ./partials/footer.ejs %>

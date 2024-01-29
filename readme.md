@@ -1,8 +1,8 @@
-login & register page
-feed page
-profile page
-picture
-story feature
-edit details
-share to story
-search accounts
+search
+follow
+followers and following
+stories
+comments
+share
+save
+menu and logout

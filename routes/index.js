@@ -20,7 +20,12 @@ router.get('/login', function(req, res) {
 router.get('/like/:postid', async function(req, res) {
   const post = await postModel.findOne({_id: req.params.postid});
   const user = await userModel.findOne({username: req.session.passport.user});
-  post.like.push(user._id);
+  if(post.like.indexOf(user._id) === -1){
+    post.like.push(user._id);
+  }
+  else{
+    post.like.splice(post.like.indexOf(user._id), 1);
+  }
   await post.save();
   res.json(post);
 });
@@ -46,8 +51,60 @@ router.get('/profile', isLoggedIn, async function(req, res) {
   res.render('profile', {footer: true, user});
 });
 
-router.get('/search', isLoggedIn, function(req, res) {
-  res.render('search', {footer: true});
+router.get('/profile/:user', isLoggedIn, async function(req, res) {
+  let user = await userModel
+  .findOne({username: req.session.passport.user})
+
+  if(user.username === req.params.user){
+    res.redirect("/profile");
+  }
+  
+  let userprofile = await userModel
+  .findOne({username: req.params.user})
+  .populate("posts");
+
+  res.render('userprofile', {footer: true, userprofile, user});
+});
+
+router.get('/follow/:userid', isLoggedIn, async function(req, res) {
+  let followKarneWaala = await userModel
+  .findOne({username: req.session.passport.user})
+  
+  let followHoneWaala = await userModel
+  .findOne({_id: req.params.userid})
+
+  if(followKarneWaala.following.indexOf(followHoneWaala._id) !== -1){
+    let index = followKarneWaala.following.indexOf(followHoneWaala._id);
+    followKarneWaala.following.splice(index, 1);
+
+    let index2 = followHoneWaala.followers.indexOf(followKarneWaala._id);
+    followHoneWaala.followers.splice(index2, 1);
+  }
+  else{
+    followHoneWaala.followers.push(followKarneWaala._id);
+    followKarneWaala.following.push(followHoneWaala._id);
+  }
+
+  await followHoneWaala.save();
+  await followKarneWaala.save();
+
+  res.redirect("back");
+});
+
+router.get('/search', isLoggedIn, async function(req, res) {
+  let user = await userModel
+  .findOne({username: req.session.passport.user})
+  res.render('search', {footer: true, user});
+});
+
+router.get('/search/:user', isLoggedIn, async function(req, res) {
+  const searchTerm = `^${req.params.user}`;
+  const regex = new RegExp(searchTerm);
+  
+  let users = await userModel
+  .find({username: { $regex: regex } })
+
+  res.json(users);
 });
 
 router.get('/edit', isLoggedIn, async function(req, res) {
