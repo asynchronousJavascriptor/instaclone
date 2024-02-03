@@ -11,8 +11,14 @@
       </div>
       <button id="selectpic" class="text-blue-500 capitalize">select picture</button>
     </div>
+    <div class="flex w-full justify-center items-center mt-10 gap-3">
+      <h5 class="post opacity-100 border-b-[1px] p-2 border-zinc-400">post</h5>
+      <h5 class="story opacity-20 border-b-[1px] p-2 border-zinc-900">story</h5>
+    </div>
     <form id="uploadform" action="/post" class="w-full px-6 py-3 mt-10" enctype="multipart/form-data" method="post">
-        <input hidden type="file" name="image">
+        <input class="postinput" hidden name="category" type="radio" value="post" checked>
+        <input class="storyinput" hidden name="category" type="radio" value="story">
+        <input id="imageinp" hidden type="file" name="image">
         <textarea name="caption" class="px-2 py-1 w-full bg-zinc-900 border-2 h-20 border-zinc-800 resize-none rounded-md outline-none" placeholder="Write a caption..."></textarea>
         <input class="w-full px-2 py-2 bg-blue-500 rounded-md" type="submit" value="Post">
     </form>
@@ -21,7 +27,31 @@
   <script>
     document.querySelector("#selectpic")
     .addEventListener("click", function(){
-        document.querySelector("#uploadform input").click();
+        document.querySelector("#uploadform #imageinp").click();
     });
+
+    document.querySelector(".post")
+    .addEventListener("click", function(){
+      this.style.opacity = 1;
+      this.style.borderColor = "rgb(161,161,170)";
+
+      document.querySelector(".story").style.opacity = .2;
+      document.querySelector(".story").style.borderColor = "#18181B";
+      
+      document.querySelector(".postinput").setAttribute("checked", true);
+      document.querySelector(".storyinput").setAttribute("checked", false);
+    })
+
+    document.querySelector(".story")
+    .addEventListener("click", function(){
+      this.style.opacity = 1;
+      this.style.borderColor = "rgb(161,161,170)";
+
+      document.querySelector(".post").style.opacity = .2;
+      document.querySelector(".post").style.borderColor = "#18181B";
+
+      document.querySelector(".postinput").setAttribute("checked", false);
+      document.querySelector(".storyinput").setAttribute("checked", true);
+    })
   </script>
 <% include ./partials/footer.ejs %>

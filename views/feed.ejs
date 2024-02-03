@@ -8,66 +8,18 @@
       </div>
     </div>
     <div class="story px-3 flex gap-3 overflow-auto mt-5">
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=2550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
+      <% stories.forEach(function(story){ %>
+        <div class="circle flex-shrink-0">
+          <div
+            class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
+            <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
+              <img class="w-full h-full object-cover"
+                src="/images/uploads/<%= story.user.picture %>"
+                alt="">
+            </div>
           </div>
         </div>
-      </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1570158268183-d296b2892211?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=2550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1570158268183-d296b2892211?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=2550&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
-      <div class="circle flex-shrink-0">
-        <div
-          class="gradient w-[18vw] h-[18vw] bg-sky-100 rounded-full bg-gradient-to-r from-purple-700 to-orange-500 flex items-center justify-center">
-          <div class="inner w-[92%] h-[92%] rounded-full overflow-hidden">
-            <img class="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1570158268183-d296b2892211?q=80&w=3456&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="">
-          </div>
-        </div>
-      </div>
+        <% }) %>
     </div>
     <div class="posts parent mb-20">
       <% posts.reverse().forEach(function(post){ %>
@@ -97,7 +49,11 @@
                     <i class="ri-chat-3-line"></i>
                     <i class="ri-share-circle-line"></i>
             </div>
-            <i class="ri-bookmark-line"></i>
+            <% if(user.saved.indexOf(post.id)===-1){ %>
+              <i data-postid="<%= post.id %>" class="save ri-bookmark-line"></i>
+              <% } else { %>
+                <i data-postid="<%= post.id %>" class="save ri-bookmark-fill text-zinc-100"></i>
+                <% } %>
           </div>
           <h3 class="likeval px-4 mt-2 text-sm leading-none tracking-tight">
             <%= post.like.length %> likes
@@ -113,7 +69,9 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     function formatRelativeTime(date) {
       const now = new Date();
@@ -171,32 +129,47 @@
               console.log(response.like.length);
               post.querySelector(".likeval").textContent = response.like.length + " likes"
             })
-        
-            var icon = document.createElement("i");
-            icon.classList.add("ri-heart-3-fill");
-            icon.classList.add("text-red-700", "text-6xl", 'absolute', 'top-1/2', 'left-1/2', '-translate-x-[50%]', '-translate-y-[50%]', 'z-[9]');
-            dets.target.parentNode.appendChild(icon);
-            
-            gsap.from(icon, {
-              scale: .5,
-              y: 30,
-              opacity: 0,
-              ease: Expo,
-              duration: .3
-            })
 
-            gsap.to(icon, {
-              scale: 0,
-              y: -30,
-              opacity: 0,
-              duration: .3,
-              ease: Expo,
-              delay: .3,
-              onComplete: ()=>{
-                dets.target.parentNode.removeChild(icon);
+          var icon = document.createElement("i");
+          icon.classList.add("ri-heart-3-fill");
+          icon.classList.add("text-red-700", "text-6xl", 'absolute', 'top-1/2', 'left-1/2', '-translate-x-[50%]', '-translate-y-[50%]', 'z-[9]');
+          dets.target.parentNode.appendChild(icon);
+
+          gsap.from(icon, {
+            scale: .5,
+            y: 30,
+            opacity: 0,
+            ease: Expo,
+            duration: .3
+          })
+
+          gsap.to(icon, {
+            scale: 0,
+            y: -30,
+            opacity: 0,
+            duration: .3,
+            ease: Expo,
+            delay: .3,
+            onComplete: () => {
+              dets.target.parentNode.removeChild(icon);
+            }
+          })
+        }
+        else if (dets.target.classList.contains("save")) {
+          var id = dets.target.dataset.postid;
+          fetch(`/save/${id}`)
+            .then(raw => raw.json())
+            .then(result => {
+              if (!dets.target.classList.contains("ri-bookmark-line")) {
+                dets.target.classList.remove("ri-bookmark-fill", "text-zinc-100");
+                dets.target.classList.add("ri-bookmark-line")
+              }
+              else {
+                dets.target.classList.remove("ri-bookmark-line")
+                dets.target.classList.add("ri-bookmark-fill", "text-zinc-100")
               }
             })
-          }
+        }
       })
   </script>
 

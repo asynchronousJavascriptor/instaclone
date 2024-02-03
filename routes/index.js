@@ -4,6 +4,7 @@ const passport = require('passport');
 const localStrategy = require('passport-local');
 const userModel = require('./users');
 const postModel = require('./posts');
+const storyModel = require('./story');
 passport.use(new localStrategy(userModel.authenticate()));
 const upload = require("./multer");
 const utils = require('../utils/utils');
@@ -35,18 +36,23 @@ router.get('/feed', isLoggedIn, async function(req, res) {
   .findOne({username: req.session.passport.user})
   .populate("posts");
 
+  let stories = await storyModel
+  .find()
+  .populate("user");
+
   let posts = await postModel
   .find()
   .populate("user");
 
-
-  res.render('feed', {footer: true, user, posts, dater: utils.formatRelativeTime});
+  res.render('feed', {footer: true, user, posts, stories, dater: utils.formatRelativeTime});
 });
 
 router.get('/profile', isLoggedIn, async function(req, res) {
   let user = await userModel
   .findOne({username: req.session.passport.user})
-  .populate("posts");
+  .populate("posts")
+  .populate("saved")
+  console.log(user);
 
   res.render('profile', {footer: true, user});
 });
@@ -97,6 +103,21 @@ router.get('/search', isLoggedIn, async function(req, res) {
   res.render('search', {footer: true, user});
 });
 
+router.get('/save/:postid', isLoggedIn, async function(req, res) {
+  let user = await userModel
+  .findOne({username: req.session.passport.user})
+
+  if(user.saved.indexOf(req.params.postid) === -1){
+    user.saved.push(req.params.postid);
+  }
+  else{
+    var index = user.saved.indexOf(req.params.postid);
+    user.saved.splice(index, 1);
+  }
+  await user.save();
+  res.json(user);
+});
+
 router.get('/search/:user', isLoggedIn, async function(req, res) {
   const searchTerm = `^${req.params.user}`;
   const regex = new RegExp(searchTerm);
@@ -128,14 +149,28 @@ router.post('/update', isLoggedIn, async function(req, res) {
 
 router.post('/post', isLoggedIn, upload.single("image"), async function(req, res) {
   const user = await userModel.findOne({username: req.session.passport.user});
-  const post = await postModel.create({
-    user: user._id,
-    caption: req.body.caption,
-    picture: req.file.filename,
-  })
-  user.posts.push(post._id);
+  
+  if(req.body.category === "post"){
+    const post = await postModel.create({
+      user: user._id,
+      caption: req.body.caption,
+      picture: req.file.filename,
+    })
+    user.posts.push(post._id);
+  }
+  else if(req.body.category === "story"){
+    let story = await storyModel.create({
+      story: req.file.filename,
+      user: user._id
+    });
+    user.stories.push(story._id);
+  }
+  else{
+    res.send("tez mat chalo");
+  }
+  
   await user.save();
-  res.redirect("/profile");
+  res.redirect("/feed");
 });
 
 router.post('/upload', isLoggedIn, upload.single('image'), async function(req, res) {
