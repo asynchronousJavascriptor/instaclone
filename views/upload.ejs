@@ -16,7 +16,7 @@
       <h5 class="story opacity-20 border-b-[1px] p-2 border-zinc-900">story</h5>
     </div>
     <form id="uploadform" action="/post" class="w-full px-6 py-3 mt-10" enctype="multipart/form-data" method="post">
-        <input class="postinput" hidden name="category" type="radio" value="post" checked>
+        <input class="postinput" hidden name="category" type="radio" value="post" checked="true">
         <input class="storyinput" hidden name="category" type="radio" value="story">
         <input id="imageinp" hidden type="file" name="image">
         <textarea name="caption" class="px-2 py-1 w-full bg-zinc-900 border-2 h-20 border-zinc-800 resize-none rounded-md outline-none" placeholder="Write a caption..."></textarea>
@@ -39,7 +39,7 @@
       document.querySelector(".story").style.borderColor = "#18181B";
       
       document.querySelector(".postinput").setAttribute("checked", true);
-      document.querySelector(".storyinput").setAttribute("checked", false);
+      document.querySelector(".storyinput").removeAttribute("checked");
     })
 
     document.querySelector(".story")
@@ -50,7 +50,7 @@
       document.querySelector(".post").style.opacity = .2;
       document.querySelector(".post").style.borderColor = "#18181B";
 
-      document.querySelector(".postinput").setAttribute("checked", false);
+      document.querySelector(".postinput").removeAttribute("checked");
       document.querySelector(".storyinput").setAttribute("checked", true);
     })
   </script>
