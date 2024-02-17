@@ -1,9 +1,7 @@
 
-
-```markdown
 # InstaClone
 
-InstaClone is a social media platform clone that allows users to share posts, follow others, and engage with content. This README provides information on how to set up and run the InstaClone project.
+InstaClone is a social media platform clone that allows users to share posts, follow others, and engage with content. This README provides detailed information on how to set up and run the InstaClone project.
 
 ## Table of Contents
 
@@ -27,7 +25,7 @@ InstaClone is a social media platform clone that allows users to share posts, fo
 
 ## Description
 
-InstaClone is a social media platform that replicates key features of popular platforms. Users can create accounts, share posts, follow other users, and explore a feed of posts. This project serves as a template for building a full-fledged social media application.
+InstaClone is a social media platform that replicates key features of popular platforms. Users can create accounts, log in, share posts, follow other users, and explore a feed of posts. This project serves as a template for building a full-fledged social media application.
 
 ## Prerequisites
 
